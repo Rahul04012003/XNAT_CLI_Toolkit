@@ -2,7 +2,7 @@ import sys
 import os.path
 from setuptools import setup, find_packages
 
-PKG_NAME = 'XNAT-CLI Toolkit'
+PKG_NAME = 'XNAT_CLI_Toolkit'
 
 # Extract version number from module
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), PKG_NAME))
@@ -12,7 +12,7 @@ setup(
     name=PKG_NAME,
     author='Rahul Rajput',
     author_email='rahul.rajput@proxmed.com.au',
-    version='0.2.0',
+    version='0.5.0',
     packages=find_packages(),
     entry_points={
         'console_scripts': ['xnat-share = XNAT_CLI_Toolkit:share_subjects',
@@ -31,6 +31,7 @@ setup(
         'A collection of scripts for sharing/uploading and listing '
         'data from XNAT repositories.'),
     long_description=open('README.rst').read(),
+    long_description_content_type="text/x-rst",
     install_requires=['xnat>=0.6',
                       'progressbar2>=3.16.0',
                       'future>=0.16'],

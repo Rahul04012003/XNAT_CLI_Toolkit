@@ -210,7 +210,7 @@ If the connection to the **XNAT** server fails, or if there is an issue with the
 
 Example
 ~~~~~~~
-Here’s an example of listing projects from the XNAT server without passing credentials (assuming they have been previously stored):
+Here's an example of listing projects from the XNAT server without passing credentials (assuming they have been previously stored):
 
 ::
 
@@ -315,7 +315,7 @@ Example log entry:
 
 Example
 ~~~~~~~
-Here’s an example of uploading and archiving DICOM files to an XNAT project:
+Here's an example of uploading and archiving DICOM files to an XNAT project:
 
 ::
 
@@ -407,7 +407,7 @@ Workflow
 
 Example
 ~~~~~~~
-Here’s an example command to run the script:
+Here's an example command to run the script:
 
 ::
 
@@ -474,7 +474,7 @@ Workflow
 
 Example
 ~~~~~~~
-Here’s an example command to run the script:
+Here's an example command to run the script:
 
 ::
 
@@ -549,7 +549,7 @@ Workflow
 
 Example
 ~~~~~~~
-Here’s an example command to run the script:
+Here's an example command to run the script:
 
 ::
 
@@ -605,7 +605,7 @@ Workflow
 
 Example
 ~~~~~~~
-Here’s an example command to run the script:
+Here's an example command to run the script:
 
 ::
 
