@@ -81,9 +81,7 @@ After Installation of xnat
     - **os**: For file system navigation and file handling (part of the Python standard library).
 
     - **authenticate**: Custom module for managing XNAT credentials and handling expired credentials.
-
         - This module includes:
-
             - ``store_credentials()``:A funtion to store the credentials, Using ``xnat-authenticate`` users can store their credentials(Auto-expire in 1 Hour.)
 
             - ``get_credentials()``: A function to retrieve stored XNAT credentials.
@@ -565,7 +563,7 @@ Here’s an example command to run the script:
 ::
 
     xnat-updatedemographics --project BrainStudy --username johndoe --server https://xnat.example.com --password mypassword --new_subjects_file new_subjects.json
-    
+
 This command updates the demographic variables for the subjects listed in ``new_subjects.json`` in the ``BrainStudy`` project on the specified XNAT server.
 
 Sharing Module
