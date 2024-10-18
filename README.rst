@@ -387,7 +387,6 @@ Workflow
 
 4. **File Uploading**:
     - For each ZIP file in the collected list:
-
         - The script attempts to upload the file to the prearchive area of the specified XNAT project.
 
         - It logs the upload process and tracks any errors that occur during the upload.
