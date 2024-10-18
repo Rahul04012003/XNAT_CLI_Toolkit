@@ -144,13 +144,11 @@ Key Functions
 ~~~~~~~~~~~~~
 
 - ``store_credentials(host, username, password):``
-
     - Saves the host and user credentials to the .netrc file.
 
     - Stores a timestamp for the credentials in a JSON file (``~/.last_credentials.json``), allowing the system to verify the session validity.
 
 - ``get_credentials():``
-
     - Retrieves the last stored credentials from the JSON file.
 
     - Checks if the credentials have expired. If the session has expired (after 30 minutes), it prompts the user to re-enter their credentials.
@@ -195,7 +193,6 @@ Key Features
 ~~~~~~~~~~~~
 
 - Command-line options: The ``xnat-list`` command supports passing in the server URL, username, and password directly via the command line.
-
     - ``--server`` or ``-s``: The XNAT server URL (e.g., ``http://localhost``).
 
     - ``--username`` or ``-u``: The username for the XNAT server.
@@ -203,7 +200,6 @@ Key Features
     - ``--password`` or ``-p``: The password for the XNAT server. If not provided, credentials will be fetched from stored values.
 
 - Logging:
-
     - Logs are created in the ``logs`` folder in the current working directory.
 
     - The log filename is generated using the current date and time, ensuring that each session has its own log file. The log captures important events such as connecting to the server, fetching projects, and errors if any occur during the process.
@@ -463,7 +459,6 @@ Workflow
 
 4. **DICOM Metadata Extraction**:
     - For each scan in the session, the script extracts the following DICOM metadata:
-
         - Study Date
 
         - Study Time
@@ -531,13 +526,11 @@ Workflow
 
 4. **Demographic Data Retrieval**:
     - For each subject in the loaded list:
-
         - The script retrieves the subject object from the specified project.
 
         - It then iterates through the experiments and scans associated with the subject to extract demographic information from the DICOM data.
 
         - The following DICOM tags are used to obtain demographic variables:
-
             - Subject Age: Retrieved from the tag ``(0010,1010)``.
 
             - Subject Date of Birth: Retrieved from the tag ``(0010,0030)``.
@@ -546,7 +539,6 @@ Workflow
 
 5. **Updating Demographics**:
     - The script updates the demographic fields for each subject:
-
         - Age: If available, the age is converted to an integer (removing the 'Y' suffix) or set to ``0`` if not specified.
 
         - Date of Birth: Updated with the retrieved value.
