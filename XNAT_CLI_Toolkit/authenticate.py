@@ -5,7 +5,7 @@ import json
 import time
 from datetime import datetime, timedelta
 
-EXPIRATION_TIME = 30  # 1 hour in seconds
+EXPIRATION_TIME = 3600  # 1 hour in seconds
 
 def store_credentials(host, username, password):
     """
