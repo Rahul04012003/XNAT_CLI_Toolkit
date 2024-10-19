@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "XNAT_CLI_Toolkit"
+version = "0.5.1"
+description = "A command-line toolkit for interacting with XNAT repositories."
+readme = "README.rst"
+requires-python = ">=3.7"
+dependencies = [
+    "pandas>=1.1.0",
+    "xnat>=0.6",
+    "click>=8.0"
+]
+license = { file = "LICENSE" }
+authors = [{ name = "Rahul Rajput", email = "rahul.rajput@proxmed.com.au" }]
+maintainers = [{ name = "Rahul Rajput", email = "rahul.rajput@proxmed.com.au" }]
+keywords = ["XNAT", "CLI", "Toolkit", "DICOM", "REST API"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+
+[project.urls]
+repository = "https://github.com/Rahul04012003/XNAT_CLI_Toolkit"
+
+[tool.black]
+line-length = 88
+
+[tool.flake8]
+max-line-length = 88
+
+[project.scripts]
+xnat-share = "XNAT_CLI_Toolkit:share_subjects",
+xnat-upload = "XNAT_CLI_Toolkit:upload_and_archive",
+xnat-list ="XNAT_CLI_Toolkit:list_projects",
+xnat-toolkit = "XNAT_CLI_Toolkit:list_commands",
+xnat-prearchive = "XNAT_CLI_Toolkit:upload_to_prearchive",
+xnat-archive = "XNAT_CLI_Toolkit:archive_to_xnat",
+xnat-updatedemographics = "XNAT_CLI_Toolkit:update_demographics",
+xnat-authenticate ="XNAT_CLI_Toolkit:store"
