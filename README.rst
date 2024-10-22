@@ -22,7 +22,7 @@ The command-line interface allows for flexibility and efficiency in handling lar
 Core Functionalities:
 ---------------------
 
-1. **List Projects**: Retrieve and display a list of available XNAT projects.
+1. **List Projects**: Retrieve and display a list of available XNAT projects or subjects from a specific project.
 
 2. **Upload Data**: Upload data to XNAT in a structured manner:
     - Prearchiving
@@ -164,13 +164,13 @@ When credentials are older than the expiration time (60 minutes), the system wil
 Project Listing Module
 -----------------------
 
-The ``list.py`` module provides functionality to list the available projects on the XNAT server. 
-This command uses the ``click`` package to create a command-line interface that connects to the server, fetches a list of projects, and displays them. 
+The ``list.py`` module provides functionality to list the available projects or Subjects from a specific project on the XNAT server. 
+This command uses the ``click`` package to create a command-line interface that connects to the server, fetches a list of projects or subjects and displays them. 
 If credentials (server URL, username, and password) are not provided via the command-line, it retrieves them from previously stored credentials using the ``authenticate.py`` module.
 
 Command for Listing Projects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``xnat-list`` command fetches and displays the list of projects stored on the XNAT server. 
+The ``xnat-list`` command fetches and displays the list of projects or subjects from a specific project stored on the XNAT server. 
 If credentials are not passed in via the command-line options, the stored credentials from ``.netrc`` or the last credentials JSON file are used.
 
 Usage
@@ -189,6 +189,18 @@ If you have already stored your credentials using the ``xnat-authenticate`` comm
 
 This will securely retrieve your credentials from the stored ``.netrc`` file and connect to the XNAT server.
 
+To list all the subjects from a specific project, use the following command:
+
+::
+
+    xnat-list --server <XNAT_SERVER_URL> --username <USERNAME> --password <PASSWORD> --project-id <PROJECT-ID>
+
+OR, If you have already stored your credentials using the ``xnat-authenticate`` command, you can omit the server, username, and password, and the tool will automatically fetch the saved credentials:
+
+::
+
+    xnat-list --project-id <PROJECT-ID>
+
 Key Features
 ~~~~~~~~~~~~
 
@@ -198,6 +210,8 @@ Key Features
     - ``--username`` or ``-u``: The username for the XNAT server.
 
     - ``--password`` or ``-p``: The password for the XNAT server. If not provided, credentials will be fetched from stored values.
+
+    - ``--project-id`` or ``-pid``: The project id of the project whose subjects you want to be displayed. If not provided, it will give the list of all the available projects on the XNAT Server.
 
 - Logging:
     - Logs are created in the ``logs`` folder in the current working directory.
