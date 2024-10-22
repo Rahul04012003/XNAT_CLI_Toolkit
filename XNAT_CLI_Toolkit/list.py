@@ -16,12 +16,16 @@ str_melbdt = str(melbdt).split('.')[0].replace(':', '_')
 @click.option('--server', '-s', prompt=False, help="The XNAT server URL (e.g., http://localhost). If not provided, it will be fetched from stored credentials.")
 @click.option('--username', '-u', prompt=False, help="The XNAT username. If not provided, it will be fetched from stored credentials.")
 @click.option('--password', '-p', prompt=False, hide_input=True, help="The XNAT password. If not provided, it will be fetched from stored credentials.")
-def list_projects(server, username, password):
+@click.option('--project-id', '-pid', prompt=False, help="The XNAT project ID to list subjects. If not provided, it will list all projects.")
+def list_projects(server, username, password, project_id):
     """
-    List projects in the XNAT server.
+    List projects or subjects within a specified project on the XNAT server.
     
     If server, username, and password are not provided,
     it will use credentials from the .netrc file.
+
+    If project_id is provided, list subjects in that project.
+    If project_id is not provided, list all projects.
     """
     session = None
 
@@ -45,7 +49,7 @@ def list_projects(server, username, password):
             click.echo("Using credentials from .netrc...")
             server, username, password = get_credentials()
             logging.info("Using credentials from .netrc.")
-            click.echo(f"server: {server}, Username: {username}")
+            click.echo(f"Server: {server}, Username: {username}")
 
         # Connect to the XNAT server
         session = xnat.connect(server=server, user=username, password=password)
@@ -55,11 +59,27 @@ def list_projects(server, username, password):
             logging.error("Failed to connect to the XNAT server.")
             return
 
-        # Fetch and display the projects
-        projects = session.projects
-        logging.info("Fetched projects from the XNAT server.")
-        for project in projects:
-            click.echo(f"Project ID: {project}")
+        # If a project ID is provided, list the subjects in that project
+        if project_id:
+            click.echo(f"Listing subjects for project: {project_id}")
+            logging.info(f"Fetching subjects for project {project_id}.")
+            try:
+                project = session.projects[project_id]
+                subjects = project.subjects
+                for subject in subjects:
+                    click.echo(f"Subject ID: {subject}; Subject Label: {subjects[subject].label}")
+                logging.info(f"Fetched subjects for project {project_id}.")
+            except KeyError:
+                click.echo(f"Project ID '{project_id}' not found.")
+                logging.error(f"Project ID '{project_id}' not found.")
+        else:
+            # If no project ID is provided, list all projects
+            click.echo("Listing all projects:")
+            logging.info("Fetching all projects.")
+            projects = session.projects
+            for project in projects:
+                click.echo(f"Project ID: {project}")
+            logging.info("Fetched all projects.")
 
     except Exception as e:
         click.echo(f"Error: {str(e)}")
@@ -69,6 +89,7 @@ def list_projects(server, username, password):
         if session:
             session.disconnect()
             logging.info("Disconnected from the XNAT server.")
+
 
 if __name__ == '__main__':
     list_projects()
