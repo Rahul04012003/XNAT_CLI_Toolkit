@@ -119,6 +119,16 @@ To install the XNAT_CLI_Toolkit, use the following command:
 Once installed, you can start using the command-line tool by typing ``xnat-toolkit`` in your terminal.
 
 
+XNAT-COMMANDS
+-------------
+
+To display the list of available commands in the Toolkit:
+
+::
+
+    xnat-toolkit
+
+This will display all the available commands in XNAT-Toolkit, you can furthermore learn how the commands works using ``<COMMAND-NAME> --help`` to view all the required arguements for the command.
 Authentication Module
 ---------------------
 
@@ -626,3 +636,429 @@ Here's an example command to run the script:
     xnat-share --project BrainStudy --username johndoe --server https://xnat.example.com --password mypassword --shared_users janedoe,robert
 
 This command shares the BrainStudy project with the users janedoe and robert on the specified XNAT server.
+
+Custom Form Fetch Module
+-------------------------
+
+The ``customform_get`` module provides functionality to fetch specific custom form data from an XNAT server. 
+It allows retrieving form data associated with subjects or experiments. 
+To fetch custom form data, appropriate identifiers such as **Subject Accession ID**, **Experiment Accession ID**, or **Project ID** with corresponding labels must be provided.
+
+Command for Fetching Custom Forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``xnat-customformget`` command fetches custom form data from the XNAT server based on the provided identifiers. It requires at least one of the following combinations of parameters:
+
+- **Subject Accession ID** (or **Subject Label with Project ID**).
+- **Experiment Accession ID** (or **Experiment Label with Project ID**).
+
+Credentials for the server can be passed via command-line options or retrieved from previously stored credentials (e.g., ``.netrc`` or JSON).
+
+Usage
+~~~~~
+
+**Fetch data for a subject:**
+
+::
+
+    xnat-customformget --server <XNAT_SERVER_URL> --username <USERNAME> --password <PASSWORD> --subject-id <SUBJECT-ID>
+
+**OR, if using a Subject Label:**
+
+::
+
+    xnat-customformget --project-id <PROJECT-ID> --subject-id <SUBJECT-LABEL>
+
+**Fetch data for an experiment:**
+
+::
+
+    xnat-customformget --experiment-id <EXPERIMENT-ID>
+
+**OR, if using an Experiment Label:**
+
+::
+
+    xnat-customformget --project-id <PROJECT-ID> --experiment-id <EXPERIMENT-LABEL>
+
+Include UUID to target specific custom forms:
+
+::
+
+    xnat-customformget --experiment-id <EXPERIMENT-ID> --uuid <UUID>
+
+Key Features
+~~~~~~~~~~~~
+
+- **Mandatory identifiers**:
+
+    - Requires either **Subject ID** (or Subject Label with Project ID) or **Experiment ID** (or Experiment Label with Project ID).
+
+    - The UUID is optional but helps to narrow down results to a specific custom form.
+
+- **Command-line options:**
+
+    - ``--server`` or ``-s``: The XNAT server URL (e.g., ``http://localhost``).
+    - ``--username`` or ``-u``: The username for the XNAT server.
+    - ``--password`` or ``-p``: The password for the XNAT server.
+    - ``--uuid``: The UUID of the custom form to delete (mandatory).
+    - ``--project-id`` or ``-d``: The project ID to specify the context for deletion.
+    - ``--subject-id`` or ``-sid``: The subject ID or label.
+    - ``--experiment-id`` or ``-eid``: The experiment ID or label.
+
+- **Credential management:**
+
+    - Automatically fetches credentials from stored ``.netrc`` or JSON files if not provided on the command line.
+
+- **Logging:**
+
+    - Logs are created in the ``logs`` folder in the current working directory.
+    - Log filenames include a timestamp to ensure uniqueness and to track sessions.
+
+- **Error handling:** Provides meaningful error messages for issues such as:
+
+    - Missing mandatory options like ``--uuid`` or required subject/experiment identifiers.
+    - Failed connections to the XNAT server.
+
+Error Handling
+~~~~~~~~~~~~~~
+In case of missing mandatory options or invalid identifiers, an appropriate error message is displayed and logged. For example:
+
+::
+
+    $ xnat-customformget --uuid INVALID_UUID
+    Error: Insufficient parameters provided. UUID must be combined with valid subject or experiment identifiers.
+
+Example
+~~~~~~~
+**Fetching custom form data for a subject:**
+
+::
+
+    xnat-customformget --subject-id SUBJECT123
+    Using credentials from .netrc...
+    Data retrieved successfully.
+
+**Using labels:**
+
+::
+
+    xnat-customformget --project-id PROJECT123 --subject-id SUBJECT_LABEL
+
+**Fetching specific custom form data using UUID:**
+
+::
+
+    xnat-customformget --experiment-id EXP12345 --uuid abc12345-6789
+    
+In case of errors:
+
+::
+
+    $ xnat-customformget --uuid abc12345-6789
+    Error: Missing subject or experiment identifiers. Provide --subject-id or --experiment-id.
+
+Logging Example
+~~~~~~~~~~~~~~~
+Logs provide detailed timestamps for every action:
+
+::
+
+    2024-11-24 10:30:10 - INFO - Using credentials from .netrc.
+    2024-11-24 10:30:12 - INFO - Sending GET request to http://xnat.example.com/...
+    2024-11-24 10:30:14 - INFO - Custom form data retrieved successfully.
+
+File Structure
+~~~~~~~~~~~~~~
+
+- ``xnat-customformget``: Command for fetching custom form data from XNAT.
+- Logs: Created in the ``logs`` folder with timestamps for each session.
+- Error handling: Error messages for failed operations are displayed and logged.
+
+Custom Form Update Module
+-------------------------
+
+The ``customform_put`` module provides functionality to update specific custom form data on an XNAT server. 
+Updating a custom form requires identifiers such as **Subject Accession ID**, **Experiment Accession ID**, or **Project ID** with corresponding labels must be provided.
+
+The custom form data must be provided as a JSON payload that adheres to the schema of the target form.
+
+Command for Updating Custom Forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``xnat-customformput command`` updates custom form data on the XNAT server based on the provided identifiers and payload. It requires one of the following combinations
+
+- **Subject Accession ID** (or **Subject Label with Project ID**).
+- **Experiment Accession ID** (or **Experiment Label with Project ID**).
+
+In addition, the UUID of the custom form must always be provided to specify the target form.
+
+Usage
+~~~~~
+
+**Update data for a subject:**
+
+::
+
+    xnat-customformput --server <XNAT_SERVER_URL> --username <USERNAME> --password <PASSWORD> --subject-id <SUBJECT-ID> --uuid <UUID> --json-file <PAYLOAD_FILE>
+
+**OR, if using a Subject Label:**
+
+::
+
+    xnat-customformput --project-id <PROJECT-ID> --subject-id <SUBJECT-LABEL> --uuid <UUID> --json-file <PAYLOAD_FILE>
+
+**Update data for an experiment:**
+
+::
+
+    xnat-customformput --experiment-id <EXPERIMENT-ID> --uuid <UUID> --json-file <PAYLOAD_FILE>
+
+**OR, if using an Experiment Label:**
+
+::
+
+    xnat-customformput --project-id <PROJECT-ID> --experiment-id <EXPERIMENT-LABEL> --uuid <UUID> --json-file <PAYLOAD_FILE>
+
+Include UUID to target specific custom forms:
+
+::
+
+    xnat-customformput --experiment-id <EXPERIMENT-ID> --uuid <UUID>
+
+
+Key Features
+~~~~~~~~~~~~
+
+- **Mandatory identifiers**:
+
+    - Requires either **Subject ID** (or Subject Label with Project ID) or **Experiment ID** (or Experiment Label with Project ID).
+
+    - The UUID is optional but helps to narrow down results to a specific custom form.
+
+- **Command-line options:**
+
+    - ``--server`` or ``-s``: The XNAT server URL (e.g., ``http://localhost``).
+    - ``--username`` or ``-u``: The username for the XNAT server.
+    - ``--password`` or ``-p``: The password for the XNAT server.
+    - ``--uuid``: The UUID of the custom form to delete (mandatory).
+    - ``--project-id`` or ``-d``: The project ID to specify the context for deletion.
+    - ``--subject-id`` or ``-sid``: The subject ID or label.
+    - ``--experiment-id`` or ``-eid``: The experiment ID or label.
+    - ``--json-file`` or ``-j`` Path to the JSON payload file containing the updated custom form data.
+
+- **Credential management:**
+
+    - Automatically fetches credentials from stored ``.netrc`` or JSON files if not provided on the command line.
+
+- **Logging:**
+
+    - Logs are created in the ``logs`` folder in the current working directory.
+    - Log filenames include a timestamp to ensure uniqueness and to track sessions.
+
+- **Error handling:** Provides meaningful error messages for issues such as:
+
+    - Missing mandatory options like ``--uuid`` or required subject/experiment identifiers.
+    - Failed connections to the XNAT server.
+    - Displays errors for missing parameters or invalid JSON payloads.
+
+Error Handling
+~~~~~~~~~~~~~~
+In case of missing mandatory options or invalid identifiers, an appropriate error message is displayed and logged. For example:
+
+::
+
+    $ xnat-customformput --uuid INVALID_UUID
+    Error: Insufficient parameters provided. UUID must be combined with valid subject or experiment identifiers.
+
+Example
+~~~~~~~
+**Updating custom form data for a subject:**
+
+::
+
+    xnat-customformput --subject-id SUBJECT123 --uuid abc12345-6789 --payload updated_form.json
+    Using credentials from .netrc...
+    Custom form data updated successfully.
+
+**Using labels:**
+
+::
+
+    xnat-customformput --project-id PROJECT123 --subject-id SUBJECT_LABEL --uuid abc12345-6789 --payload updated_form.json
+
+**Updating data for an experiment:**
+
+::
+
+    xnat-customformput --experiment-id EXP12345 --uuid abc12345-6789 --payload updated_form.json
+    
+In case of errors:
+
+::
+
+    $ xnat-customformput --uuid abc12345-6789
+    Error: Missing subject or experiment identifiers. Provide --subject-id or --experiment-id.
+
+Logging Example
+~~~~~~~~~~~~~~~
+Logs provide detailed timestamps for every action:
+
+::
+
+    2024-11-24 10:30:10 - INFO - Using credentials from .netrc.
+    2024-11-24 10:30:12 - INFO - Sending GET request to http://xnat.example.com/...
+    2024-11-24 10:30:14 - INFO - Custom form data updated successfully.
+
+File Structure
+~~~~~~~~~~~~~~
+
+- ``xnat-customformput``: Command for fetching custom form data from XNAT.
+- Logs: Created in the ``logs`` folder with timestamps for each session.
+- Error handling: Error messages for failed operations are displayed and logged.
+
+Custom Form Delete Module
+-------------------------
+
+The ``customform_delete`` module provides functionality to delete specific custom form data from an XNAT server. It supports deletion at various levels, such as subject or experiment,
+by utilizing the **custom form's UUID** in combination with identifiers like **Subject Accession ID**, **Experiment Accession ID**, or **Project ID** with appropriate labels. This ensures that data deletion is contextually accurate.
+This module is particularly useful for maintaining data integrity and removing outdated or erroneous custom form entries from the XNAT server.
+
+Command for Deleting Custom Forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``xnat-customformdelete`` command deletes custom form data from the XNAT server. The UUID alone is insufficient for deletion; it must be accompanied by one of the following:
+
+- **Subject Accession ID** (or **Subject Label with Project ID**).
+- **Experiment Accession ID** (or **Experiment Label with Project ID**).
+
+Credentials for the server can be passed via command-line options or retrieved from previously stored credentials (e.g., ``.netrc`` or JSON).
+
+Usage
+~~~~~
+
+To delete custom form data, you must include the UUID alongside the appropriate subject or experiment identifiers:
+
+**Delete data linked to a subject:**
+
+::
+
+    xnat-customformdelete --server <XNAT_SERVER_URL> --username <USERNAME> --password <PASSWORD> --subject-id <SUBJECT-ID> --uuid <UUID>
+
+**OR using a subject label with a project:**
+
+::
+
+    xnat-customformdelete --project-id <PROJECT-ID> --subject-id <SUBJECT-LABEL> --uuid <UUID>
+
+**Delete data linked to an experiment:**
+
+::
+
+    xnat-customformdelete --experiment-id <EXPERIMENT-ID> --uuid <UUID>
+
+**OR using an experiment label with a project:**
+
+::
+
+    xnat-customformdelete --project-id <PROJECT-ID> --experiment-id <EXPERIMENT-LABEL> --uuid <UUID>
+
+If your credentials are already stored using the ``xnat-authenticate`` command, you can omit the ``--server``, ``--username``, and ``--password`` options:
+
+::
+
+    xnat-customformdelete --subject-id <SUBJECT-ID> --uuid <UUID>
+
+Key Features
+~~~~~~~~~~~~
+
+- **Mandatory identifiers**: The ``xnat-customformdelete`` command requires the UUID in combination with either:
+
+    - **Subject Accession ID** or **Subject Label** with a **Project ID**.
+
+    - **Experiment Accession ID** or **Experiment Label** with a **Project ID**.
+
+Without these combinations, deletion cannot proceed.
+
+- **Command-line options:**
+
+    - ``--server`` or ``-s``: The XNAT server URL (e.g., ``http://localhost``).
+    - ``--username`` or ``-u``: The username for the XNAT server.
+    - ``--password`` or ``-p``: The password for the XNAT server.
+    - ``--uuid``: The UUID of the custom form to delete (mandatory).
+    - ``--project-id`` or ``-d``: The project ID to specify the context for deletion.
+    - ``--subject-id`` or ``-sid``: The subject ID or label.
+    - ``--experiment-id`` or ``-eid``: The experiment ID or label.
+
+- **Credential management:**
+
+    - Automatically fetches credentials from stored ``.netrc`` or JSON files if not provided on the command line.
+
+- **Logging:**
+
+    - Logs are created in the ``logs`` folder in the current working directory.
+    - Log filenames include a timestamp to ensure uniqueness and to track sessions.
+
+- **Error handling:** Provides meaningful error messages for issues such as:
+
+    - Missing mandatory options like ``--uuid`` or required subject/experiment identifiers.
+    - Failed connections to the XNAT server.
+    - Server errors during the delete operation.
+
+Error Handling
+~~~~~~~~~~~~~~
+In case of missing mandatory options or invalid identifiers, an appropriate error message is displayed and logged. For example:
+
+::
+
+    $ xnat-customformdelete --uuid INVALID_UUID
+    Error: Insufficient parameters provided. UUID must be combined with valid subject or experiment identifiers.
+
+Example
+~~~~~~~
+**Deleting custom form data linked to a subject:**
+
+::
+
+    $ xnat-customformdelete --subject-id SUBJECT123 --uuid abc12345-6789
+    Using credentials from .netrc...
+    Custom form data deleted successfully.
+
+**Deleting custom form data linked to an experiment:**
+
+::
+
+    $ xnat-customformdelete --experiment-id EXP12345 --uuid abc12345-6789
+    Using credentials from .netrc...
+    Custom form data deleted successfully.
+
+**Using labels with a project context:**
+
+::
+
+    $ xnat-customformdelete --project-id PROJECT123 --subject-id SUBJECT_LABEL --uuid abc12345-6789
+    Custom form data deleted successfully.
+    
+In case of errors:
+
+::
+
+    $ xnat-customformdelete --uuid abc12345-6789
+    Error: Missing subject or experiment identifiers. Provide --subject-id or --experiment-id.
+
+Logging Example
+~~~~~~~~~~~~~~~
+Logs provide detailed timestamps for every action:
+
+::
+
+    2024-11-24 10:30:10 - INFO - Using credentials from .netrc.
+    2024-11-24 10:30:12 - INFO - Sending DELETE request to http://xnat.example.com/...
+    2024-11-24 10:30:14 - INFO - Custom form data deleted successfully.
+
+File Structure
+~~~~~~~~~~~~~~
+
+- ``xnat-customformdelete``: Command for deleting custom form data from XNAT.
+- Logs: Created in the ``logs`` folder with timestamps for each session.
+- Error handling: Error messages for failed operations are displayed and logged.
