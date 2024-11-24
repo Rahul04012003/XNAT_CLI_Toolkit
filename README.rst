@@ -691,13 +691,11 @@ Key Features
 ~~~~~~~~~~~~
 
 1. **Mandatory identifiers**:
-
     - Requires either **Subject ID** (or Subject Label with Project ID) or **Experiment ID** (or Experiment Label with Project ID).
 
     - The UUID is optional but helps to narrow down results to a specific custom form.
 
 2. **Command-line options:**
-
     - ``--server`` or ``-s``: The XNAT server URL (e.g., ``http://localhost``).
     - ``--username`` or ``-u``: The username for the XNAT server.
     - ``--password`` or ``-p``: The password for the XNAT server.
@@ -707,11 +705,9 @@ Key Features
     - ``--experiment-id`` or ``-eid``: The experiment ID or label.
 
 3. **Credential management:**
-
     - Automatically fetches credentials from stored ``.netrc`` or JSON files if not provided on the command line.
 
 4. **Logging:**
-
     - Logs are created in the ``logs`` folder in the current working directory.
     - Log filenames include a timestamp to ensure uniqueness and to track sessions.
 
@@ -831,13 +827,11 @@ Key Features
 ~~~~~~~~~~~~
 
 1. **Mandatory identifiers**:
-
     - Requires either **Subject ID** (or Subject Label with Project ID) or **Experiment ID** (or Experiment Label with Project ID).
 
     - The UUID is optional but helps to narrow down results to a specific custom form.
 
 2. **Command-line options:**
-
     - ``--server`` or ``-s``: The XNAT server URL (e.g., ``http://localhost``).
     - ``--username`` or ``-u``: The username for the XNAT server.
     - ``--password`` or ``-p``: The password for the XNAT server.
@@ -848,16 +842,13 @@ Key Features
     - ``--json-file`` or ``-j`` Path to the JSON payload file containing the updated custom form data.
 
 3. **Credential management:**
-
     - Automatically fetches credentials from stored ``.netrc`` or JSON files if not provided on the command line.
 
 4. **Logging:**
-
     - Logs are created in the ``logs`` folder in the current working directory.
     - Log filenames include a timestamp to ensure uniqueness and to track sessions.
 
 5. **Error handling:** Provides meaningful error messages for issues such as:
-
     - Missing mandatory options like ``--uuid`` or required subject/experiment identifiers.
     - Failed connections to the XNAT server.
     - Displays errors for missing parameters or invalid JSON payloads.
@@ -973,7 +964,6 @@ Key Features
 ~~~~~~~~~~~~
 
 1. **Mandatory identifiers**: The ``xnat-customformdelete`` command requires the UUID in combination with either:
-
     - **Subject Accession ID** or **Subject Label** with a **Project ID**.
 
     - **Experiment Accession ID** or **Experiment Label** with a **Project ID**.
@@ -981,7 +971,6 @@ Key Features
 Without these combinations, deletion cannot proceed.
 
 2. **Command-line options:**
-
     - ``--server`` or ``-s``: The XNAT server URL (e.g., ``http://localhost``).
     - ``--username`` or ``-u``: The username for the XNAT server.
     - ``--password`` or ``-p``: The password for the XNAT server.
@@ -991,16 +980,13 @@ Without these combinations, deletion cannot proceed.
     - ``--experiment-id`` or ``-eid``: The experiment ID or label.
 
 3. **Credential management:**
-
     - Automatically fetches credentials from stored ``.netrc`` or JSON files if not provided on the command line.
 
 4. **Logging:**
-
     - Logs are created in the ``logs`` folder in the current working directory.
     - Log filenames include a timestamp to ensure uniqueness and to track sessions.
 
 5. **Error handling:** Provides meaningful error messages for issues such as:
-
     - Missing mandatory options like ``--uuid`` or required subject/experiment identifiers.
     - Failed connections to the XNAT server.
     - Server errors during the delete operation.
