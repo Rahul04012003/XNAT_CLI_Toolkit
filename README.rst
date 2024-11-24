@@ -690,13 +690,13 @@ Include UUID to target specific custom forms:
 Key Features
 ~~~~~~~~~~~~
 
-- **Mandatory identifiers**:
+1. **Mandatory identifiers**:
 
     - Requires either **Subject ID** (or Subject Label with Project ID) or **Experiment ID** (or Experiment Label with Project ID).
 
     - The UUID is optional but helps to narrow down results to a specific custom form.
 
-- **Command-line options:**
+2. **Command-line options:**
 
     - ``--server`` or ``-s``: The XNAT server URL (e.g., ``http://localhost``).
     - ``--username`` or ``-u``: The username for the XNAT server.
@@ -706,16 +706,16 @@ Key Features
     - ``--subject-id`` or ``-sid``: The subject ID or label.
     - ``--experiment-id`` or ``-eid``: The experiment ID or label.
 
-- **Credential management:**
+3. **Credential management:**
 
     - Automatically fetches credentials from stored ``.netrc`` or JSON files if not provided on the command line.
 
-- **Logging:**
+4. **Logging:**
 
     - Logs are created in the ``logs`` folder in the current working directory.
     - Log filenames include a timestamp to ensure uniqueness and to track sessions.
 
-- **Error handling:** Provides meaningful error messages for issues such as:
+5. **Error handling:** Provides meaningful error messages for issues such as:
 
     - Missing mandatory options like ``--uuid`` or required subject/experiment identifiers.
     - Failed connections to the XNAT server.
@@ -830,13 +830,13 @@ Include UUID to target specific custom forms:
 Key Features
 ~~~~~~~~~~~~
 
-- **Mandatory identifiers**:
+1. **Mandatory identifiers**:
 
     - Requires either **Subject ID** (or Subject Label with Project ID) or **Experiment ID** (or Experiment Label with Project ID).
 
     - The UUID is optional but helps to narrow down results to a specific custom form.
 
-- **Command-line options:**
+2. **Command-line options:**
 
     - ``--server`` or ``-s``: The XNAT server URL (e.g., ``http://localhost``).
     - ``--username`` or ``-u``: The username for the XNAT server.
@@ -847,16 +847,16 @@ Key Features
     - ``--experiment-id`` or ``-eid``: The experiment ID or label.
     - ``--json-file`` or ``-j`` Path to the JSON payload file containing the updated custom form data.
 
-- **Credential management:**
+3. **Credential management:**
 
     - Automatically fetches credentials from stored ``.netrc`` or JSON files if not provided on the command line.
 
-- **Logging:**
+4. **Logging:**
 
     - Logs are created in the ``logs`` folder in the current working directory.
     - Log filenames include a timestamp to ensure uniqueness and to track sessions.
 
-- **Error handling:** Provides meaningful error messages for issues such as:
+5. **Error handling:** Provides meaningful error messages for issues such as:
 
     - Missing mandatory options like ``--uuid`` or required subject/experiment identifiers.
     - Failed connections to the XNAT server.
@@ -972,7 +972,7 @@ If your credentials are already stored using the ``xnat-authenticate`` command, 
 Key Features
 ~~~~~~~~~~~~
 
-- **Mandatory identifiers**: The ``xnat-customformdelete`` command requires the UUID in combination with either:
+1. **Mandatory identifiers**: The ``xnat-customformdelete`` command requires the UUID in combination with either:
 
     - **Subject Accession ID** or **Subject Label** with a **Project ID**.
 
@@ -980,7 +980,7 @@ Key Features
 
 Without these combinations, deletion cannot proceed.
 
-- **Command-line options:**
+2. **Command-line options:**
 
     - ``--server`` or ``-s``: The XNAT server URL (e.g., ``http://localhost``).
     - ``--username`` or ``-u``: The username for the XNAT server.
@@ -990,16 +990,16 @@ Without these combinations, deletion cannot proceed.
     - ``--subject-id`` or ``-sid``: The subject ID or label.
     - ``--experiment-id`` or ``-eid``: The experiment ID or label.
 
-- **Credential management:**
+3. **Credential management:**
 
     - Automatically fetches credentials from stored ``.netrc`` or JSON files if not provided on the command line.
 
-- **Logging:**
+4. **Logging:**
 
     - Logs are created in the ``logs`` folder in the current working directory.
     - Log filenames include a timestamp to ensure uniqueness and to track sessions.
 
-- **Error handling:** Provides meaningful error messages for issues such as:
+5. **Error handling:** Provides meaningful error messages for issues such as:
 
     - Missing mandatory options like ``--uuid`` or required subject/experiment identifiers.
     - Failed connections to the XNAT server.
