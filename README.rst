@@ -712,7 +712,6 @@ Key Features
     - Log filenames include a timestamp to ensure uniqueness and to track sessions.
 
 5. **Error handling:** Provides meaningful error messages for issues such as:
-
     - Missing mandatory options like ``--uuid`` or required subject/experiment identifiers.
     - Failed connections to the XNAT server.
 
