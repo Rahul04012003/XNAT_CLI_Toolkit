@@ -33,6 +33,8 @@ Core Functionalities:
 
 3. **Sharing Data**: Share project data with collaborators or other systems.
 
+4. **Custom Form Manipulation**: Fetch, Update or Delete Custom Form data with different modular functions.
+
 4. **Help Command**: Display a list of available commands with ``xnat-toolkit``.
 
 
@@ -640,8 +642,8 @@ This command shares the BrainStudy project with the users janedoe and robert on 
 Custom Form Fetch Module
 -------------------------
 
-The ``customform_get`` module provides functionality to fetch specific custom form data from an XNAT server. 
-It allows retrieving form data associated with subjects or experiments. 
+The ``CustomForm Fetch`` and Combine script retrieves and combines custom form data from an XNAT server. 
+It allows fetching populated data based on specific identifiers (project, subject, experiment, or form UUID) and merges it with form definitions to create a structured output.
 To fetch custom form data, appropriate identifiers such as **Subject Accession ID**, **Experiment Accession ID**, or **Project ID** with corresponding labels must be provided.
 
 Command for Fetching Custom Forms
@@ -977,6 +979,8 @@ Without these combinations, deletion cannot proceed.
     - ``--project-id`` or ``-d``: The project ID to specify the context for deletion.
     - ``--subject-id`` or ``-sid``: The subject ID or label.
     - ``--experiment-id`` or ``-eid``: The experiment ID or label.
+    - ``--uuid`` or ``-uuid``: Custom form UUID. Specify to delete a particular form. Omit to delete all forms.
+    - ``--help`` or ``-h``: Displays the help text for usage and options.
 
 3. **Credential management:**
     - Automatically fetches credentials from stored ``.netrc`` or JSON files if not provided on the command line.
@@ -989,6 +993,22 @@ Without these combinations, deletion cannot proceed.
     - Missing mandatory options like ``--uuid`` or required subject/experiment identifiers.
     - Failed connections to the XNAT server.
     - Server errors during the delete operation.
+
+Functionality
+~~~~~~~~~~~~~
+
+The script allows the user to:
+    - **Delete a specific form** by providing its UUID.
+    - **Delete all forms** for a subject or an experiment by omitting the UUID.
+    - Logs detailed actions and errors in a timestamped log file stored in the ``logs`` directory.
+
+**Form Deletion Scenarios:**
+    - Delete a specific form:
+        - Requires ``--uuid`` parameter.
+        - Automatically constructs the API URL to locate the form and send a DELETE request.
+    - Delete all forms:
+        - Fetches all form IDs associated with the subject/experiment.
+        - Iteratively sends DELETE requests for each form ID.
 
 Error Handling
 ~~~~~~~~~~~~~~
@@ -1047,3 +1067,147 @@ File Structure
 - ``xnat-customformdelete``: Command for deleting custom form data from XNAT.
 - Logs: Created in the ``logs`` folder with timestamps for each session.
 - Error handling: Error messages for failed operations are displayed and logged.
+
+Unshare Module
+--------------
+
+Overview
+~~~~~~~~
+The ``unshare.py`` script is designed to facilitate the removal of access to XNAT projects or data from specified users.
+This script connects to an XNAT server and allows the user to unshare subjects and their associated experiments from a specified project, streamlining the process of managing project access.
+Usage
+~~~~~
+To run the script, use the following command in the terminal:
+
+::
+
+    xnat-unshare --project-id <project_id> --username <username> --server <server_url> --sublist <path/to/subject_list.txt>
+
+Command-Line Options
+~~~~~~~~~~~~~~~~~~~~
+
+- ``--project-id`` or ``-p``: (Required) The ID of the XNAT project from which subjects will be unshared.
+
+- ``--username`` or ``-u``: (Optional) The username for XNAT. If not provided, the script will attempt to fetch stored credentials.
+
+- ``--server`` or ``-s``: (Optional) The URL of the XNAT server. If not provided, the script will attempt to fetch stored credentials.
+
+- ``--sublist`` or ``-sl``: (Required) Path to a text file containing the list of subjects to be unshared.
+
+Workflow
+~~~~~~~~
+
+1. **Credential Management**:
+    - The script checks if the username and server are provided as command-line arguments.
+
+    - If any are missing, it attempts to retrieve stored credentials using the `get_credentials()` function from the `authenticate` module. If the credentials are expired, it raises a `CredentialExpiredError`.
+
+2. **Server Connection**:
+    - The script connects to the specified XNAT server using the provided or retrieved credentials. If the connection fails, an error message is logged.
+
+3. **Subject and Experiment Unsharing**:
+    - The script accesses the specified project within the XNAT session.
+
+    - It iterates over the subjects listed in the `--sublist` file, attempting to unshare each subject and its associated experiments.
+
+    - The unsharing process is performed via API calls to the server, and success or failure messages are logged accordingly.
+
+4. **Logging**:
+    - The script logs all actions and results, providing a clear record of which subjects and experiments were successfully unshared.
+
+Example
+~~~~~~~
+Here's an example command to run the script:
+
+::
+
+    xnat-unshare --project-id BrainStudy --username johndoe --server https://xnat.example.com --sublist /path/to/subjects.txt
+
+This command unshares all subjects listed in the `subjects.txt` file from the `BrainStudy` project on the specified XNAT server.
+
+Move Module
+-----------
+
+Overview
+~~~~~~~~
+The ``move.py`` script is designed to facilitate the movement of subjects and their associated experiments between XNAT projects. 
+This script connects to an XNAT server and allows users to transfer data seamlessly, either individually or in bulk using a CSV file.
+Usage
+~~~~~
+To run the script, use the following command in the terminal:
+
+::
+
+    xnat-move --server <server_url> --username <username> --password <password> --source <source_project> --destination <destination_project> --table <path/to/csv>
+
+Command-Line Options
+~~~~~~~~~~~~~~~~~~~~
+
+- ``--server`` or ``-s``: (Optional) The URL of the XNAT server. If not provided, the script will attempt to fetch stored credentials.
+
+- ``--username`` or ``-u``: (Optional) The username for XNAT. If not provided, the script will attempt to fetch stored credentials.
+
+- ``--password`` or ``-p``: (Optional) The password for XNAT. If not provided, the script will attempt to fetch stored credentials.
+
+- ``--source`` or ``-sp``: (Optional) The name of the source XNAT project from which subjects will be moved.
+
+- ``--destination`` or ``-dp``: (Optional) The name of the destination XNAT project to which subjects will be moved.
+
+- ``--table`` or ``-t``: (Optional) Path to a CSV file containing the list of subjects and their source and destination project data. The CSV should have the columns subject, source, and destination.
+
+- ``--subject`` or ``-sj``: (Optional) The ID of a single subject to be moved. If provided, the script will move only this subject.
+
+Workflow
+~~~~~~~~
+
+1. **Credential Management**:
+    - The script checks if the server, username, and password are provided as command-line arguments.
+
+    - If any are missing, it attempts to retrieve stored credentials using the get_credentials() function.
+
+2. **Mode of Operation**:
+    - The script supports multiple modes of operation:
+
+    - Single Subject Mode: Move a single subject using the --subject option.
+
+    - CSV Mode: Read subjects and projects from a CSV file using the --table option.
+
+    - Project Mode: Move all subjects from a source project to a destination project if both are specified.
+    
+3. **Server Connection**:
+    - The script connects to the XNAT server using the provided or retrieved credentials. Connection issues are logged as errors.
+
+4. **Project and Subject Validation**:
+    - The script checks the availability of source and destination projects.
+
+    - It fetches subjects from the source project if not provided via a CSV or CLI.
+
+5. **Data Movement**:
+    - Temporarily shares subjects with the destination project.
+
+    - Moves each experiment associated with the subject permanently.
+
+    - Moves the subject permanently if all experiments are successfully moved.
+
+6. **Logging**:
+    - The script logs each step, providing clear information about the success or failure of moving subjects and experiments.
+
+Example
+~~~~~~~
+Here's an example command to move subjects using a CSV file:
+
+::
+
+    xnat-move --server https://xnat.example.com --username johndoe --password mypassword --table /path/to/subjects.csv
+
+Alternatively, to move all subjects from one project to another:
+
+::
+
+    xnat-move --server https://xnat.example.com --username johndoe --password mypassword --source OldProject --destination NewProject
+
+And for a single subject:
+
+::
+
+    xnat-move --server https://xnat.example.com --username johndoe --password mypassword --source OldProject --destination NewProject --subject Subject123
